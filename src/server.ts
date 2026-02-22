@@ -25,6 +25,18 @@ app.post("/movies", async (req, res) => {
     const { title, genre_id, language_id, oscar_count, release_date } = req.body
 
     try {
+        const movieWithSameTitle = await prisma.movie.findFirst({
+            where: { title: { equals: title, mode: "insensitive" } }, // Faz com que não tenha diferença entre maiúsculas e minúsculas, ou seja, se o filme for escrito com maiscula ou minuscula, ele não vai deixar cadastradar se for o mesmo titulo.
+        })
+
+        if (movieWithSameTitle) {
+            return res
+                .status(409)
+                .send({
+                    message: "Já existe um filme cadastrado com esse título",
+                })
+        }
+
         await prisma.movie.create({
             data: {
                 title: title,
