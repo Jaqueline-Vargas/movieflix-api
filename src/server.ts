@@ -1,7 +1,8 @@
 import express from "express"
-import { PrismaClient } from "./generated/prisma"
+import { PrismaClient } from "./generated/prisma/index.js"
 import swaggerUi from "swagger-ui-express"
-import swaggerDocument from "../swagger.json"
+import swaggerDocument from "../swagger.json" with { type: "json" }
+
 
 const port = 3000
 const app = express()
